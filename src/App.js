@@ -1,6 +1,7 @@
 import React from "react";
 import firebase from './firebase'
 import SpellInput from "./spellInput";
+import HomeApp from "./Components/myApp";
 
 function App() {
 
@@ -30,7 +31,10 @@ function App() {
   }
 
   return (
-    <ul>
+    <div>
+      <HomeApp />
+      <ul>
+      
       <input value={newSpellName} onChange={(e) => setNewSpellName(e.target.value)} />
       <button onClick={addNewField} >Create</button>
       {
@@ -41,6 +45,7 @@ function App() {
         ))
       }
     </ul>
+    </div>
   );
 }
 
