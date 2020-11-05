@@ -7,38 +7,37 @@ function App() {
   const [spells, setSpells] = React.useState([])
   const [newSpellName, setNewSpellName] = React.useState()
 
- React.useEffect(
-   ()=> {
-    const fetchData = async () =>
-    {
-      const db = firebase.firestore();
-      const data = await db.collection("spells").get();
-      console.log(data)
-      setSpells(data.docs.map( doc => ({
-        ...doc.data(),
-        id : doc.id,
-      }) ))
+  React.useEffect(
+    () => {
 
-    }
-    fetchData();
-   }, []
- )
- const addNewField = () => 
- {
+        const db = firebase.firestore();
+        return db.collection("spells").onSnapshot( snapShot => {
+          const spellsData = [];
+          snapShot.forEach( doc => spellsData.push({
+            ...doc.data(),
+            id : doc.id
+          }) );
+          setSpells(spellsData)
+        } )
+        
+
+    }, []
+  )
+  const addNewField = () => {
     console.log("clicked")
     const db = firebase.firestore();
-    db.collection("spells").add({name : newSpellName})
- }
+    db.collection("spells").add({ name: newSpellName })
+  }
 
   return (
     <ul>
-      <input value={newSpellName} onChange={ (e) => setNewSpellName(e.target.value) } />
+      <input value={newSpellName} onChange={(e) => setNewSpellName(e.target.value)} />
       <button onClick={addNewField} >Create</button>
       {
         spells.map(spells => (
           <li key={spells}>
             <SpellInput spells={spells} />
-             </li>
+          </li>
         ))
       }
     </ul>
