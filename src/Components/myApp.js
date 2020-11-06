@@ -3,6 +3,8 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Home from './home';
 import Login from "./login";
 import SignUp from "./signUp";
+import { AuthProvider } from "./authContext";
+import PrivateRoute from './privateRoute';
 
 function HomeApp() {
     return (
@@ -10,18 +12,20 @@ function HomeApp() {
             <h3> App
             </h3>
             <div>
-                <Router >
+                <AuthProvider>
+                    <Router >
 
-                    <Routes >
-                        <Route path="/"  element={<Home />} />
-                        <Route path="/home" element={ <Home /> } />
-                        <Route path="/login" element={ <Login /> } />
-                        <Route path="/signup" element={ <SignUp /> } />
-                    </Routes>
+                        <Routes >
+                            <PrivateRoute path="/" element={<Home />} />
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/signup" element={<SignUp />} />
+                        </Routes>
 
-                </Router>
+                    </Router>
+                </AuthProvider>
+
             </div>
-            
+
         </div>
     );
 }
